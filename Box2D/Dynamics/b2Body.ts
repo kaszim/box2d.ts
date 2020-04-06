@@ -16,18 +16,13 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-// DEBUG: import { b2Assert } from "../Common/b2Settings.js";
-// DEBUG: import { b2IsValid } from "../Common/b2Math.js";
-import { b2Maybe } from "../Common/b2Settings.js";
-import { b2Vec2, b2Rot, b2Transform, b2Sweep, XY } from "../Common/b2Math.js";
-import { b2Shape, b2MassData } from "../Collision/Shapes/b2Shape.js";
-import { b2ContactEdge } from "./Contacts/b2Contact.js";
-import { b2JointEdge } from "./Joints/b2Joint.js";
-import { b2Fixture, b2FixtureDef, b2IFixtureDef } from "./b2Fixture.js";
-import { b2World } from "./b2World.js";
-// #if B2_ENABLE_CONTROLLER
-import { b2ControllerEdge } from "../Controllers/b2Controller.js";
-// #endif
+// DEBUG: import { b2Assert } from "../Common/b2Settings";
+// DEBUG: import { b2IsValid } from "../Common/b2Math";
+import { b2Maybe } from "../Common/b2Settings";
+import { b2Vec2, b2Rot, b2Transform, b2Sweep, XY } from "../Common/b2Math";
+import { b2Shape, b2MassData } from "../Collision/Shapes/b2Shape";
+import { b2ContactEdge } from "./Contacts/b2Contact";
+import { b2Fixture, b2FixtureDef, b2IFixtureDef } from "./b2Fixture";
 
 /// The body type.
 /// static: zero mass, zero velocity, may be manually moved
@@ -181,14 +176,14 @@ export class b2Body {
   public readonly m_force: b2Vec2 = new b2Vec2();
   public m_torque: number = 0;
 
-  public m_world: b2World;
+  public m_world: any;
   public m_prev: b2Body | null = null;
   public m_next: b2Body | null = null;
 
   public m_fixtureList: b2Fixture | null = null;
   public m_fixtureCount: number = 0;
 
-  public m_jointList: b2JointEdge | null = null;
+  public m_jointList: any | null = null;
   public m_contactList: b2ContactEdge | null = null;
 
   public m_mass: number = 1;
@@ -207,11 +202,11 @@ export class b2Body {
   public m_userData: any = null;
 
   // #if B2_ENABLE_CONTROLLER
-  public m_controllerList: b2ControllerEdge | null = null;
+  public m_controllerList: any | null = null;
   public m_controllerCount: number = 0;
   // #endif
 
-  constructor(bd: b2IBodyDef, world: b2World) {
+  constructor(bd: b2IBodyDef, world: any) {
     this.m_bulletFlag = b2Maybe(bd.bullet, false);
     this.m_fixedRotationFlag = b2Maybe(bd.fixedRotation, false);
     this.m_autoSleepFlag = b2Maybe(bd.allowSleep, true);
@@ -958,7 +953,7 @@ export class b2Body {
   /// Fixtures on an inactive body are implicitly inactive and will
   /// not participate in collisions, ray-casts, or queries.
   /// Joints connected to an inactive body are implicitly inactive.
-  /// An inactive body is still owned by a b2World object and remains
+  /// An inactive body is still owned by a any object and remains
   /// in the body list.
   public SetActive(flag: boolean): void {
     if (this.m_world.IsLocked()) { throw new Error(); }
@@ -1021,7 +1016,7 @@ export class b2Body {
   }
 
   /// Get the list of all joints attached to this body.
-  public GetJointList(): b2JointEdge | null {
+  public GetJointList(): any | null {
     return this.m_jointList;
   }
 
@@ -1048,7 +1043,7 @@ export class b2Body {
   }
 
   /// Get the parent world of this body.
-  public GetWorld(): b2World {
+  public GetWorld(): any {
     return this.m_world;
   }
 
@@ -1131,7 +1126,7 @@ export class b2Body {
 
   public ShouldCollideConnected(other: b2Body): boolean {
     // Does a joint prevent collision?
-    for (let jn: b2JointEdge | null = this.m_jointList; jn; jn = jn.next) {
+    for (let jn: any | null = this.m_jointList; jn; jn = jn.next) {
       if (jn.other === other) {
         if (!jn.joint.m_collideConnected) {
           return false;
@@ -1153,7 +1148,7 @@ export class b2Body {
   }
 
   // #if B2_ENABLE_CONTROLLER
-  public GetControllerList(): b2ControllerEdge | null {
+  public GetControllerList(): any | null {
     return this.m_controllerList;
   }
 

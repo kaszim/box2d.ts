@@ -18,10 +18,9 @@
 
 // #if B2_ENABLE_PARTICLE
 
-import { b2_invalidParticleIndex } from "../Common/b2Settings.js";
-import { b2Clamp, b2Vec2, XY } from "../Common/b2Math.js";
-import { b2Color, RGBA } from "../Common/b2Draw.js";
-import { b2ParticleGroup } from "./b2ParticleGroup.js";
+import { b2_invalidParticleIndex } from "../Common/b2Settings";
+import { b2Clamp, b2Vec2, XY } from "../Common/b2Math";
+import { b2Color, RGBA } from "../Common/b2Draw";
 
 /**
  * The particle type. Can be combined with the | operator.
@@ -81,7 +80,7 @@ export interface b2IParticleDef {
   color?: RGBA;
   lifetime?: number;
   userData?: any;
-  group?: b2ParticleGroup | null;
+  group?: any | null;
 }
 
 export class b2ParticleDef implements b2IParticleDef {
@@ -91,7 +90,7 @@ export class b2ParticleDef implements b2IParticleDef {
   public readonly color: b2Color = new b2Color(0, 0, 0, 0);
   public lifetime: number = 0.0;
   public userData: any = null;
-  public group: b2ParticleGroup | null = null;
+  public group: any | null = null;
 }
 
 export function b2CalculateParticleIterations(gravity: number, radius: number, timeStep: number): number {

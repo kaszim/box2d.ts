@@ -16,10 +16,9 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-// DEBUG: import { b2Assert } from "../Common/b2Settings.js";
-import { b2_epsilon, b2_epsilon_sq, b2_polygonRadius, b2_linearSlop } from "../Common/b2Settings.js";
-import { b2Max, b2Vec2, b2Rot, b2Transform, b2Abs } from "../Common/b2Math.js";
-import { b2Shape } from "./Shapes/b2Shape.js";
+// DEBUG: import { b2Assert } from "../Common/b2Settings";
+import { b2_epsilon, b2_epsilon_sq, b2_polygonRadius, b2_linearSlop } from "../Common/b2Settings";
+import { b2Max, b2Vec2, b2Rot, b2Transform, b2Abs } from "../Common/b2Math";
 
 /// A distance proxy is used by the GJK algorithm.
 /// It encapsulates any shape.
@@ -49,7 +48,7 @@ export class b2DistanceProxy {
     return this;
   }
 
-  public SetShape(shape: b2Shape, index: number): void {
+  public SetShape(shape: any, index: number): void {
     shape.SetupDistanceProxy(this, index);
   }
 
@@ -142,8 +141,8 @@ export class b2DistanceOutput {
   }
 }
 
-/// Input parameters for b2ShapeCast
-export class b2ShapeCastInput {
+/// Input parameters for anyCast
+export class anyCastInput {
 	public readonly proxyA: b2DistanceProxy = new b2DistanceProxy();
 	public readonly proxyB: b2DistanceProxy = new b2DistanceProxy();
 	public readonly transformA: b2Transform = new b2Transform();
@@ -151,8 +150,8 @@ export class b2ShapeCastInput {
 	public readonly translationB: b2Vec2 = new b2Vec2();
 }
 
-/// Output results for b2ShapeCast
-export class b2ShapeCastOutput {
+/// Output results for anyCast
+export class anyCastOutput {
 	public readonly point: b2Vec2 = new b2Vec2();
 	public readonly normal: b2Vec2 = new b2Vec2();
 	public lambda: number = 0.0;
@@ -633,16 +632,16 @@ export function b2Distance(output: b2DistanceOutput, cache: b2SimplexCache, inpu
 // GJK-raycast
 // Algorithm by Gino van den Bergen.
 // "Smooth Mesh Contacts with GJK" in Game Physics Pearls. 2010
-// bool b2ShapeCast(b2ShapeCastOutput* output, const b2ShapeCastInput* input);
-const b2ShapeCast_s_n = new b2Vec2();
-const b2ShapeCast_s_simplex = new b2Simplex();
-const b2ShapeCast_s_wA = new b2Vec2();
-const b2ShapeCast_s_wB = new b2Vec2();
-const b2ShapeCast_s_v = new b2Vec2();
-const b2ShapeCast_s_p = new b2Vec2();
-const b2ShapeCast_s_pointA = new b2Vec2();
-const b2ShapeCast_s_pointB = new b2Vec2();
-export function b2ShapeCast(output: b2ShapeCastOutput, input: b2ShapeCastInput): boolean {
+// bool anyCast(anyCastOutput* output, const anyCastInput* input);
+const anyCast_s_n = new b2Vec2();
+const anyCast_s_simplex = new b2Simplex();
+const anyCast_s_wA = new b2Vec2();
+const anyCast_s_wB = new b2Vec2();
+const anyCast_s_v = new b2Vec2();
+const anyCast_s_p = new b2Vec2();
+const anyCast_s_pointA = new b2Vec2();
+const anyCast_s_pointB = new b2Vec2();
+export function anyCast(output: anyCastOutput, input: anyCastInput): boolean {
   output.iterations = 0;
   output.lambda = 1.0;
   output.normal.SetZero();
@@ -668,12 +667,12 @@ export function b2ShapeCast(output: b2ShapeCastOutput, input: b2ShapeCastInput):
   // b2Vec2 r = input.translationB;
   const r = input.translationB;
   // b2Vec2 n(0.0f, 0.0f);
-  const n = b2ShapeCast_s_n.Set(0.0, 0.0);
+  const n = anyCast_s_n.Set(0.0, 0.0);
   // float32 lambda = 0.0f;
   let lambda = 0.0;
 
   // Initial simplex
-  const simplex = b2ShapeCast_s_simplex;
+  const simplex = anyCast_s_simplex;
   simplex.m_count = 0;
 
   // Get simplex vertices as an array.
@@ -684,13 +683,13 @@ export function b2ShapeCast(output: b2ShapeCastOutput, input: b2ShapeCastInput):
   // int32 indexA = proxyA.GetSupport(b2MulT(xfA.q, -r));
   let indexA = proxyA.GetSupport(b2Rot.MulTRV(xfA.q, b2Vec2.NegV(r, b2Vec2.s_t1), b2Vec2.s_t0));
   // b2Vec2 wA = b2Mul(xfA, proxyA.GetVertex(indexA));
-  let wA = b2Transform.MulXV(xfA, proxyA.GetVertex(indexA), b2ShapeCast_s_wA);
+  let wA = b2Transform.MulXV(xfA, proxyA.GetVertex(indexA), anyCast_s_wA);
   // int32 indexB = proxyB.GetSupport(b2MulT(xfB.q, r));
   let indexB = proxyB.GetSupport(b2Rot.MulTRV(xfB.q, r, b2Vec2.s_t0));
   // b2Vec2 wB = b2Mul(xfB, proxyB.GetVertex(indexB));
-  let wB = b2Transform.MulXV(xfB, proxyB.GetVertex(indexB), b2ShapeCast_s_wB);
+  let wB = b2Transform.MulXV(xfB, proxyB.GetVertex(indexB), anyCast_s_wB);
   // b2Vec2 v = wA - wB;
-  const v = b2Vec2.SubVV(wA, wB, b2ShapeCast_s_v);
+  const v = b2Vec2.SubVV(wA, wB, anyCast_s_v);
 
   // Sigma is the target distance between polygons
   // float32 sigma = b2Max(b2_polygonRadius, radius - b2_polygonRadius);
@@ -713,13 +712,13 @@ export function b2ShapeCast(output: b2ShapeCastOutput, input: b2ShapeCastInput):
     // indexA = proxyA.GetSupport(b2MulT(xfA.q, -v));
     indexA = proxyA.GetSupport(b2Rot.MulTRV(xfA.q, b2Vec2.NegV(v, b2Vec2.s_t1), b2Vec2.s_t0));
     // wA = b2Mul(xfA, proxyA.GetVertex(indexA));
-    wA = b2Transform.MulXV(xfA, proxyA.GetVertex(indexA), b2ShapeCast_s_wA);
+    wA = b2Transform.MulXV(xfA, proxyA.GetVertex(indexA), anyCast_s_wA);
     // indexB = proxyB.GetSupport(b2MulT(xfB.q, v));
     indexB = proxyB.GetSupport(b2Rot.MulTRV(xfB.q, v, b2Vec2.s_t0));
     // wB = b2Mul(xfB, proxyB.GetVertex(indexB));
-    wB = b2Transform.MulXV(xfB, proxyB.GetVertex(indexB), b2ShapeCast_s_wB);
+    wB = b2Transform.MulXV(xfB, proxyB.GetVertex(indexB), anyCast_s_wB);
     // b2Vec2 p = wA - wB;
-    const p = b2Vec2.SubVV(wA, wB, b2ShapeCast_s_p);
+    const p = b2Vec2.SubVV(wA, wB, anyCast_s_p);
 
     // -v is a normal at p
     v.Normalize();
@@ -790,8 +789,8 @@ export function b2ShapeCast(output: b2ShapeCastOutput, input: b2ShapeCastInput):
   }
 
   // Prepare output.
-  const pointA = b2ShapeCast_s_pointA;
-  const pointB = b2ShapeCast_s_pointB;
+  const pointA = anyCast_s_pointA;
+  const pointB = anyCast_s_pointB;
   simplex.GetWitnessPoints(pointA, pointB);
 
   if (v.LengthSquared() > 0.0) {

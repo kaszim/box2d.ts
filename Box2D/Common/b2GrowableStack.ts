@@ -16,19 +16,19 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-// DEBUG: import { b2Assert } from "./b2Settings.js";
-import { b2MakeArray } from "./b2Settings.js";
+// DEBUG: import { b2Assert } from "./b2Settings";
+import { b2MakeArray } from "./b2Settings";
 
 /// This is a growable LIFO stack with an initial capacity of N.
 /// If the stack size exceeds the initial capacity, the heap is used
 /// to increase the size of the stack.
 
 export class b2GrowableStack<T> {
-  public m_stack: Array<T | null> = [];
+  public m_stack: (T | null)[] = [];
   public m_count: number = 0;
 
   constructor(N: number) {
-    this.m_stack = b2MakeArray(N, (index) => null);
+    this.m_stack = b2MakeArray<T>(N, (index) => null);
     this.m_count = 0;
   }
 

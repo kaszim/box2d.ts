@@ -16,11 +16,10 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-// DEBUG: import { b2Assert } from "../Common/b2Settings.js";
-import { b2_maxFloat, b2_epsilon, b2_epsilon_sq, b2_maxManifoldPoints, b2MakeArray, b2MakeNumberArray } from "../Common/b2Settings.js";
-import { b2Abs, b2Min, b2Max, b2Vec2, b2Rot, b2Transform, XY } from "../Common/b2Math.js";
-import { b2Shape } from "./Shapes/b2Shape.js";
-import { b2Distance, b2DistanceInput, b2DistanceOutput, b2SimplexCache } from "./b2Distance.js";
+// DEBUG: import { b2Assert } from "../Common/b2Settings";
+import { b2_maxFloat, b2_epsilon, b2_epsilon_sq, b2_maxManifoldPoints, b2MakeArray, b2MakeNumberArray } from "../Common/b2Settings";
+import { b2Abs, b2Min, b2Max, b2Vec2, b2Rot, b2Transform, XY } from "../Common/b2Math";
+import { b2Distance, b2DistanceInput, b2DistanceOutput, b2SimplexCache } from "./b2Distance";
 
 /// @file
 /// Structures and functions used for computing contact points, distance
@@ -53,9 +52,9 @@ export class b2ContactFeature {
     this._key = value;
     this._key_invalid = false;
     this._indexA = this._key & 0xff;
-    this._indexB = (this._key >> 8) & 0xff;
-    this._typeA = (this._key >> 16) & 0xff;
-    this._typeB = (this._key >> 24) & 0xff;
+    this._indexB = (this._key >>> 8) & 0xff;
+    this._typeA = (this._key >>> 16) & 0xff;
+    this._typeB = (this._key >>> 24) & 0xff;
   }
 
   public get indexA(): number {
@@ -602,7 +601,7 @@ export function b2ClipSegmentToLine(vOut: b2ClipVertex[], vIn: b2ClipVertex[], n
 const b2TestOverlapShape_s_input: b2DistanceInput = new b2DistanceInput();
 const b2TestOverlapShape_s_simplexCache: b2SimplexCache = new b2SimplexCache();
 const b2TestOverlapShape_s_output: b2DistanceOutput = new b2DistanceOutput();
-export function b2TestOverlapShape(shapeA: b2Shape, indexA: number, shapeB: b2Shape, indexB: number, xfA: b2Transform, xfB: b2Transform): boolean {
+export function b2TestOverlapShape(shapeA: any, indexA: number, shapeB: any, indexB: number, xfA: b2Transform, xfB: b2Transform): boolean {
   const input: b2DistanceInput = b2TestOverlapShape_s_input.Reset();
   input.proxyA.SetShape(shapeA, indexA);
   input.proxyB.SetShape(shapeB, indexB);

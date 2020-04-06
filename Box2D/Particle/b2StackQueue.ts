@@ -21,12 +21,14 @@
 // DEBUG: import { b2Assert } from "../Common/b2Settings";
 
 export class b2StackQueue<T> {
-  public readonly m_buffer: Array<T | null> = [];
+  public readonly m_buffer: (T | null)[] = [];
   public m_front: number = 0;
   public m_back: number = 0;
   public get m_capacity(): number { return this.m_buffer.length; }
   constructor(capacity: number) {
-    this.m_buffer.fill(null, 0, capacity);
+    for (let i = 0; i < capacity; i++) {
+      this.m_buffer.push(null);
+    }
   }
   public Push(item: T): void {
     if (this.m_back >= this.m_capacity) {

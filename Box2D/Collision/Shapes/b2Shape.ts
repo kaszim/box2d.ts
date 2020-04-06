@@ -16,10 +16,9 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-// DEBUG: import { b2Assert } from "../../Common/b2Settings.js";
-import { b2Vec2, b2Transform, XY } from "../../Common/b2Math.js";
-import { b2AABB, b2RayCastInput, b2RayCastOutput } from "../b2Collision.js";
-import { b2DistanceProxy } from "../b2Distance.js";
+// DEBUG: import { b2Assert } from "../../Common/b2Settings";
+import { b2Vec2, b2Transform, XY } from "../../Common/b2Math";
+import { b2AABB, b2RayCastInput, b2RayCastOutput } from "../b2Collision";
 
 /// This holds the mass data computed for a shape.
 export class b2MassData {
@@ -108,7 +107,7 @@ export abstract class b2Shape {
   /// @param density the density in kilograms per meter squared.
   public abstract ComputeMass(massData: b2MassData, density: number): void;
 
-  public abstract SetupDistanceProxy(proxy: b2DistanceProxy, index: number): void;
+  public abstract SetupDistanceProxy(proxy: any, index: number): void;
 
   public abstract ComputeSubmergedArea(normal: b2Vec2, offset: number, xf: b2Transform, c: b2Vec2): number;
 

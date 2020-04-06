@@ -7,7 +7,15 @@
     "noImplicitReturns": true,
     "noImplicitThis": true,
     "noUnusedLocals": true,
-    "inlineSourceMap": true
+    "inlineSourceMap": true,
+    "types": [
+      "war3-types/core/compat",
+      "war3-types/core/common",
+      "war3-types/core/blizzard",
+      "war3-types/core/commonai",
+      "war3-types/core/polyfill",
+      "war3-types/special/w3ts"
+    ]
   },
   "include": [
     "**/*.ts"

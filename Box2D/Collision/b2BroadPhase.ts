@@ -16,9 +16,9 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-import { b2Vec2, XY } from "../Common/b2Math.js";
-import { b2AABB, b2RayCastInput } from "./b2Collision.js";
-import { b2TreeNode, b2DynamicTree } from "./b2DynamicTree.js";
+import { b2Vec2, XY } from "../Common/b2Math";
+import { b2AABB, b2RayCastInput } from "./b2Collision";
+import { b2TreeNode, b2DynamicTree } from "./b2DynamicTree";
 
 function std_iter_swap<T>(array: T[], a: number, b: number): void {
   const tmp: T = array[a];
@@ -68,10 +68,10 @@ export class b2BroadPhase<T> {
   public m_proxyCount: number = 0;
   // public m_moveCapacity: number = 16;
   public m_moveCount: number = 0;
-  public readonly m_moveBuffer: Array<b2TreeNode<T> | null> = [];
+  public readonly m_moveBuffer: b2TreeNode<T>[] = [];
   // public m_pairCapacity: number = 16;
   public m_pairCount: number = 0;
-  public readonly m_pairBuffer: Array<b2Pair<T>> = [];
+  public readonly m_pairBuffer: b2Pair<T>[] = [];
   // public m_queryProxyId: number = 0;
 
   /// Create a proxy with an initial AABB. Pairs are not reported until

@@ -16,17 +16,13 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-import { b2_maxManifoldPoints, b2MakeNumberArray } from "../Common/b2Settings.js";
-import { b2Vec2 } from "../Common/b2Math.js";
-import { b2Manifold } from "../Collision/b2Collision.js";
-import { b2Contact } from "./Contacts/b2Contact.js";
-import { b2Body, b2BodyType } from "./b2Body.js";
-import { b2Joint } from "./Joints/b2Joint.js";
-import { b2Fixture, b2Filter } from "./b2Fixture.js";
-// #if B2_ENABLE_PARTICLE
-import { b2ParticleGroup } from "../Particle/b2ParticleGroup.js";
-import { b2ParticleSystem, b2ParticleContact, b2ParticleBodyContact } from "../Particle/b2ParticleSystem.js";
-// #endif
+import { b2_maxManifoldPoints, b2MakeNumberArray } from "../Common/b2Settings";
+import { b2Vec2 } from "../Common/b2Math";
+import { b2Manifold } from "../Collision/b2Collision";
+import { b2Contact } from "./Contacts/b2Contact";
+import { b2Body, b2BodyType } from "./b2Body";
+import { b2Joint } from "./Joints/b2Joint";
+import { b2Fixture, b2Filter } from "./b2Fixture";
 
 /// Joints and fixtures are destroyed when their associated
 /// body is destroyed. Implement this listener so that you
@@ -42,14 +38,14 @@ export class b2DestructionListener {
 
   // #if B2_ENABLE_PARTICLE
   /// Called when any particle group is about to be destroyed.
-  public SayGoodbyeParticleGroup(group: b2ParticleGroup): void {}
+  public SayGoodbyeParticleGroup(group: any): void {}
 
   /// Called when a particle is about to be destroyed.
   /// The index can be used in conjunction with
   /// b2ParticleSystem::GetUserDataBuffer() or
   /// b2ParticleSystem::GetParticleHandleFromIndex() to determine which
   /// particle has been destroyed.
-  public SayGoodbyeParticle(system: b2ParticleSystem, index: number): void {}
+  public SayGoodbyeParticle(system: any, index: number): void {}
   // #endif
 }
 
@@ -84,11 +80,11 @@ export class b2ContactFilter {
   }
 
   // #if B2_ENABLE_PARTICLE
-  public ShouldCollideFixtureParticle(fixture: b2Fixture, system: b2ParticleSystem, index: number): boolean {
+  public ShouldCollideFixtureParticle(fixture: b2Fixture, system: any, index: number): boolean {
     return true;
   }
 
-  public ShouldCollideParticleParticle(system: b2ParticleSystem, indexA: number, indexB: number): boolean {
+  public ShouldCollideParticleParticle(system: any, indexA: number, indexB: number): boolean {
     return true;
   }
   // #endif
@@ -122,10 +118,10 @@ export class b2ContactListener {
   public EndContact(contact: b2Contact): void {}
 
   // #if B2_ENABLE_PARTICLE
-  public BeginContactFixtureParticle(system: b2ParticleSystem, contact: b2ParticleBodyContact): void {}
-  public EndContactFixtureParticle(system: b2ParticleSystem, contact: b2ParticleBodyContact): void {}
-  public BeginContactParticleParticle(system: b2ParticleSystem, contact: b2ParticleContact): void {}
-  public EndContactParticleParticle(system: b2ParticleSystem, contact: b2ParticleContact): void {}
+  public BeginContactFixtureParticle(system: any, contact: any): void {}
+  public EndContactFixtureParticle(system: any, contact: any): void {}
+  public BeginContactParticleParticle(system: any, contact: any): void {}
+  public EndContactParticleParticle(system: any, contact: any): void {}
   // #endif
 
   /// This is called after a contact is updated. This allows you to inspect a
@@ -161,10 +157,10 @@ export class b2QueryCallback {
   }
 
   // #if B2_ENABLE_PARTICLE
-  public ReportParticle(system: b2ParticleSystem, index: number): boolean {
+  public ReportParticle(system: any, index: number): boolean {
     return false;
   }
-  public ShouldQueryParticleSystem(system: b2ParticleSystem): boolean {
+  public ShouldQueryParticleSystem(system: any): boolean {
     return true;
   }
   // #endif
@@ -191,10 +187,10 @@ export class b2RayCastCallback {
   }
 
   // #if B2_ENABLE_PARTICLE
-  public ReportParticle(system: b2ParticleSystem, index: number, point: b2Vec2, normal: b2Vec2, fraction: number): number {
+  public ReportParticle(system: any, index: number, point: b2Vec2, normal: b2Vec2, fraction: number): number {
     return 0;
   }
-  public ShouldQueryParticleSystem(system: b2ParticleSystem): boolean {
+  public ShouldQueryParticleSystem(system: any): boolean {
     return true;
   }
   // #endif

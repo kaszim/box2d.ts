@@ -16,15 +16,13 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-import { b2_linearSlop } from "../../Common/b2Settings.js";
-import { b2Sqrt, b2Transform, b2Sweep } from "../../Common/b2Math.js";
-import { b2Manifold, b2WorldManifold, b2ManifoldPoint, b2ContactID } from "../../Collision/b2Collision.js";
-import { b2TestOverlapShape } from "../../Collision/b2Collision.js";
-import { b2TimeOfImpact, b2TOIInput, b2TOIOutput } from "../../Collision/b2TimeOfImpact.js";
-import { b2Body } from "../b2Body.js";
-import { b2Fixture } from "../b2Fixture.js";
-import { b2Shape } from "../../Collision/Shapes/b2Shape.js";
-import { b2ContactListener } from "../b2WorldCallbacks.js";
+import { b2_linearSlop } from "../../Common/b2Settings";
+import { b2Sqrt, b2Transform, b2Sweep } from "../../Common/b2Math";
+import { b2Manifold, b2WorldManifold, b2ManifoldPoint, b2ContactID } from "../../Collision/b2Collision";
+import { b2TestOverlapShape } from "../../Collision/b2Collision";
+import { b2TimeOfImpact, b2TOIInput, b2TOIOutput } from "../../Collision/b2TimeOfImpact";
+import { b2Fixture } from "../b2Fixture";
+import { b2Shape } from "../../Collision/Shapes/b2Shape";
 
 /// Friction mixing law. The idea is to allow either fixture to drive the friction to zero.
 /// For example, anything slides on ice.
@@ -39,12 +37,12 @@ export function b2MixRestitution(restitution1: number, restitution2: number): nu
 }
 
 export class b2ContactEdge {
-  private _other: b2Body | null = null; ///< provides quick access to the other body attached.
-  public get other(): b2Body {
+  private _other: any | null = null; ///< provides quick access to the other body attached.
+  public get other(): any {
     if (this._other === null) { throw new Error(); }
     return this._other;
   }
-  public set other(value: b2Body) {
+  public set other(value: any) {
     if (this._other !== null) { throw new Error(); }
     this._other = value;
   }
@@ -98,8 +96,8 @@ export abstract class b2Contact<A extends b2Shape = b2Shape, B extends b2Shape =
   }
 
   public GetWorldManifold(worldManifold: b2WorldManifold): void {
-    const bodyA: b2Body = this.m_fixtureA.GetBody();
-    const bodyB: b2Body = this.m_fixtureB.GetBody();
+    const bodyA: any = this.m_fixtureA.GetBody();
+    const bodyB: any = this.m_fixtureB.GetBody();
     const shapeA: A = this.GetShapeA();
     const shapeB: B = this.GetShapeB();
     worldManifold.Initialize(this.m_manifold, bodyA.GetTransform(), shapeA.m_radius, bodyB.GetTransform(), shapeB.m_radius);
@@ -211,7 +209,7 @@ export abstract class b2Contact<A extends b2Shape = b2Shape, B extends b2Shape =
     this.m_restitution = b2MixRestitution(this.m_fixtureA.m_restitution, this.m_fixtureB.m_restitution);
   }
 
-  public Update(listener: b2ContactListener): void {
+  public Update(listener: any): void {
     const tManifold: b2Manifold = this.m_oldManifold;
     this.m_oldManifold = this.m_manifold;
     this.m_manifold = tManifold;
@@ -226,8 +224,8 @@ export abstract class b2Contact<A extends b2Shape = b2Shape, B extends b2Shape =
     const sensorB: boolean = this.m_fixtureB.IsSensor();
     const sensor: boolean = sensorA || sensorB;
 
-    const bodyA: b2Body = this.m_fixtureA.GetBody();
-    const bodyB: b2Body = this.m_fixtureB.GetBody();
+    const bodyA: any = this.m_fixtureA.GetBody();
+    const bodyB: any = this.m_fixtureB.GetBody();
     const xfA: b2Transform = bodyA.GetTransform();
     const xfB: b2Transform = bodyB.GetTransform();
 

@@ -197,26 +197,18 @@ export function b2ParseUInt(v: string): number {
   return Math.abs(parseInt(v, 10));
 }
 
-export function b2MakeArray<T>(length: number, init: (i: number) => T): T[] {
-  const a: T[] = new Array<T>(length);
+export function b2MakeArray<T>(length: number, init: (i: number) => (T|null)): (T | null)[] {
+  const a: (T | null)[] = [];
   for (let i: number = 0; i < length; ++i) {
-    a[i] = init(i);
-  }
-  return a;
-}
-
-export function b2MakeNullArray<T>(length: number): Array<T | null> {
-  const a: Array<T | null> = new Array<T | null>(length);
-  for (let i: number = 0; i < length; ++i) {
-    a[i] = null;
+    a.push(init(i));
   }
   return a;
 }
 
 export function b2MakeNumberArray(length: number, init: number = 0): number[] {
-  const a: number[] = new Array<number>(length);
+  const a: number[] = [];
   for (let i: number = 0; i < length; ++i) {
-    a[i] = init;
+    a.push(init);
   }
   return a;
 }

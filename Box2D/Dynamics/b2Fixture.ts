@@ -16,13 +16,12 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-// DEBUG: import { b2Assert } from "../Common/b2Settings.js";
-import { b2Maybe } from "../Common/b2Settings.js";
-import { b2Vec2, b2Transform, XY } from "../Common/b2Math.js";
-import { b2AABB, b2RayCastInput, b2RayCastOutput } from "../Collision/b2Collision.js";
-import { b2TreeNode } from "../Collision/b2DynamicTree.js";
-import { b2Shape, b2ShapeType, b2MassData } from "../Collision/Shapes/b2Shape.js";
-import { b2Body } from "./b2Body.js";
+// DEBUG: import { b2Assert } from "../Common/b2Settings";
+import { b2Maybe } from "../Common/b2Settings";
+import { b2Vec2, b2Transform, XY } from "../Common/b2Math";
+import { b2AABB, b2RayCastInput, b2RayCastOutput } from "../Collision/b2Collision";
+import { b2TreeNode } from "../Collision/b2DynamicTree";
+import { b2Shape, b2ShapeType, b2MassData } from "../Collision/Shapes/b2Shape";
 
 /// This holds contact filtering data.
 export interface b2IFilter {
@@ -161,13 +160,13 @@ export class b2FixtureProxy {
 /// A fixture is used to attach a shape to a body for collision detection. A fixture
 /// inherits its transform from its parent. Fixtures hold additional non-geometric data
 /// such as friction, collision filters, etc.
-/// Fixtures are created via b2Body::CreateFixture.
+/// Fixtures are created via any::CreateFixture.
 /// @warning you cannot reuse fixtures.
 export class b2Fixture {
   public m_density: number = 0;
 
   public m_next: b2Fixture | null = null;
-  public readonly m_body: b2Body;
+  public readonly m_body: any;
 
   public readonly m_shape: b2Shape;
 
@@ -183,7 +182,7 @@ export class b2Fixture {
 
   public m_userData: any = null;
 
-  constructor(body: b2Body, def: b2IFixtureDef) {
+  constructor(body: any, def: b2IFixtureDef) {
     this.m_body = body;
     this.m_shape = def.shape.Clone();
     this.m_userData = b2Maybe(def.userData, null);
@@ -262,7 +261,7 @@ export class b2Fixture {
 
   /// Get the parent body of this fixture. This is NULL if the fixture is not attached.
   /// @return the parent body.
-  public GetBody(): b2Body {
+  public GetBody(): any {
     return this.m_body;
   }
 
@@ -312,7 +311,7 @@ export class b2Fixture {
   }
 
   /// Set the density of this fixture. This will _not_ automatically adjust the mass
-  /// of the body. You must call b2Body::ResetMassData to update the body's mass.
+  /// of the body. You must call any::ResetMassData to update the body's mass.
   public SetDensity(density: number): void {
     this.m_density = density;
   }

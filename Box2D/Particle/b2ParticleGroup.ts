@@ -18,12 +18,11 @@
 
 // #if B2_ENABLE_PARTICLE
 
-// DEBUG: import { b2Assert } from "../Common/b2Settings.js";
-import { b2Vec2, b2Transform, XY } from "../Common/b2Math.js";
-import { b2Color, RGBA } from "../Common/b2Draw.js";
-import { b2Shape } from "../Collision/Shapes/b2Shape.js";
-import { b2ParticleFlag } from "./b2Particle.js";
-import { b2ParticleSystem } from "./b2ParticleSystem.js";
+// DEBUG: import { b2Assert } from "../Common/b2Settings";
+import { b2Vec2, b2Transform, XY } from "../Common/b2Math";
+import { b2Color, RGBA } from "../Common/b2Draw";
+import { b2Shape } from "../Collision/Shapes/b2Shape";
+import { b2ParticleFlag } from "./b2Particle";
 
 export enum b2ParticleGroupFlag {
   /// Prevents overlapping or leaking.
@@ -82,7 +81,7 @@ export class b2ParticleGroupDef implements b2IParticleGroupDef {
 
 export class b2ParticleGroup {
 
-  public readonly m_system: b2ParticleSystem;
+  public readonly m_system: any;
   public m_firstIndex: number = 0;
   public m_lastIndex: number = 0;
   public m_groupFlags: b2ParticleGroupFlag = 0;
@@ -99,7 +98,7 @@ export class b2ParticleGroup {
   ///m_transform.SetIdentity();
   public m_userData: any = null;
 
-  constructor(system: b2ParticleSystem) {
+  constructor(system: any) {
     this.m_system = system;
   }
 
@@ -107,7 +106,7 @@ export class b2ParticleGroup {
     return this.m_next;
   }
 
-  public GetParticleSystem(): b2ParticleSystem {
+  public GetParticleSystem(): any {
     return this.m_system;
   }
 
